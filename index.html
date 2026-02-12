@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🌈 Color Click Arcade - Catch & Click</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-wrapper">
+    <header>
+      <div class="header-content">
+        <h1>🎯 Color Click Arcade</h1>
+        <div class="stats">
+          <div class="stat-item">⭐ Score: <span id="score">0</span></div>
+          <div class="stat-item">❤️ Lives: <span id="lives">3</span></div>
+          <div class="stat-item">📊 Level: <span id="level">1</span></div>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="mute-btn" class="control-btn" aria-label="Mute/Unmute">🔊</button>
+        <button id="pause-btn" class="control-btn" aria-label="Pause/Resume">⏸️</button>
+      </div>
+    </header>
+
+    <div id="game-container">
+      <canvas id="particle-canvas"></canvas>
+    </div>
+
+    <div class="info-panel">
+      <div id="combo-counter" class="hidden">⚡ x<span id="combo-count">0</span></div>
+      <div id="timer-display">⏱️ <span id="timer">00:00</span></div>
+    </div>
+
+    <div id="game-over-screen" class="screen hidden">
+      <div class="screen-content">
+        <h2>🏁 Game Over</h2>
+        <div class="final-stats">
+          <p>Your Score: <span id="final-score">0</span></p>
+          <p>Level Reached: <span id="final-level">1</span></p>
+          <p>Max Combo: <span id="final-combo">0</span></p>
+        </div>
+        <div class="button-group">
+          <button id="restart-btn" class="game-btn">🔄 Play Again</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="start-screen" class="screen">
+      <div class="screen-content">
+        <h1>🌈 COLOR CLICK</h1>
+        <div class="instructions">
+          <div class="instruction-item">
+            <span class="color-dot" style="background: #ff4757;"></span>
+            <span>+1 point</span>
+          </div>
+          <div class="instruction-item">
+            <span class="color-dot" style="background: #FFD700;"></span>
+            <span>+5 points & particles</span>
+          </div>
+          <div class="instruction-item">
+            <span class="color-dot" style="background: #FF0000;"></span>
+            <span>-1 life</span>
+          </div>
+        </div>
+        <button id="start-btn" class="game-btn large">🚀 START GAME</button>
+      </div>
+    </div>
+
+    <div id="pause-screen" class="screen hidden">
+      <div class="screen-content">
+        <h2>⏸️ PAUSED</h2>
+        <button id="resume-btn" class="game-btn">▶️ Resume</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
