@@ -2,78 +2,237 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🌈 Color Click Arcade - Catch & Click</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 MOVING CIRCLES • ARCADE</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="game-wrapper">
-    <header>
-      <div class="header-content">
-        <h1>🎯 Color Click Arcade</h1>
-        <div class="stats">
-          <div class="stat-item">⭐ Score: <span id="score">0</span></div>
-          <div class="stat-item">❤️ Lives: <span id="lives">3</span></div>
-          <div class="stat-item">📊 Level: <span id="level">1</span></div>
+  <div class="arcade-container">
+    
+    <!-- LEFT SIDE - GAME AREA (70%) -->
+    <div class="game-section">
+      <div class="game-header">
+        <div class="game-badge">
+          <span class="pulse-dot"></span>
+          LIVE
+        </div>
+        <div class="game-title">MOVING CIRCLES</div>
+        <div class="header-controls">
+          <button id="pause-btn" class="icon-btn">⏸️</button>
+          <button id="mute-btn" class="icon-btn">🔊</button>
         </div>
       </div>
-      <div class="header-controls">
-        <button id="mute-btn" class="control-btn" aria-label="Mute/Unmute">🔊</button>
-        <button id="pause-btn" class="control-btn" aria-label="Pause/Resume">⏸️</button>
+      
+      <div id="game-container">
+        <canvas id="particle-canvas"></canvas>
+        <div id="moving-circles"></div>
       </div>
-    </header>
-
-    <div id="game-container">
-      <canvas id="particle-canvas"></canvas>
+      
+      <div class="action-bar">
+        <button id="start-btn" class="primary-btn">🚀 START GAME</button>
+        <div class="quick-stats">
+          <div class="quick-stat">
+            <span>⭐</span>
+            <span id="quick-score">0</span>
+          </div>
+          <div class="quick-stat">
+            <span>❤️</span>
+            <span id="quick-lives">3</span>
+          </div>
+          <div class="quick-stat">
+            <span>⚡</span>
+            <span id="quick-combo">0</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="info-panel">
-      <div id="combo-counter" class="hidden">⚡ x<span id="combo-count">0</span></div>
-      <div id="timer-display">⏱️ <span id="timer">00:00</span></div>
+    <!-- RIGHT SIDE - COMPACT INFO HUB (30%) -->
+    <div class="info-hub">
+      
+      <!-- PLAYER STATUS CARD -->
+      <div class="hub-card status-card">
+        <div class="player-avatar">
+          <div class="avatar-ring">
+            <span>🎮</span>
+          </div>
+        </div>
+        <div class="player-stats-compact">
+          <div class="stat-block">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-data">
+              <span class="stat-label">SCORE</span>
+              <span id="score" class="stat-number">0</span>
+            </div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-icon">📊</div>
+            <div class="stat-data">
+              <span class="stat-label">LEVEL</span>
+              <span id="level" class="stat-number">1</span>
+            </div>
+          </div>
+          <div class="stat-block lives-block">
+            <div class="stat-icon">❤️</div>
+            <div class="stat-data">
+              <span class="stat-label">LIVES</span>
+              <div class="lives-indicator">
+                <span id="lives" class="stat-number">3</span>
+                <span class="stat-max">/3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHALLENGE TRACKER - COMPACT -->
+      <div class="hub-card challenge-tracker">
+        <div class="card-header">
+          <span class="header-icon">🎯</span>
+          <span class="header-title">ACTIVE CHALLENGE</span>
+          <span id="difficulty-level" class="difficulty-tag">NORMAL</span>
+        </div>
+        <div id="challenge-desc" class="challenge-message">
+          Catch moving circles!
+        </div>
+        <div class="progress-compact">
+          <div class="progress-info">
+            <span>Level Progress</span>
+            <span id="progress-text">0/10</span>
+          </div>
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMBO & TIME ROW -->
+      <div class="hub-row">
+        <div class="hub-card combo-card">
+          <div class="combo-header">
+            <span>⚡ COMBO</span>
+            <span id="combo-count" class="combo-value">0</span>
+          </div>
+          <div class="combo-bar-container">
+            <div id="combo-fill" class="combo-fill" style="width: 0%"></div>
+          </div>
+          <div class="combo-max">Max: <span id="max-combo">0</span></div>
+        </div>
+        
+        <div class="hub-card time-card">
+          <div class="time-display">
+            <span>⏱️</span>
+            <span id="timer" class="time-value">00:00</span>
+          </div>
+          <div class="best-score-mini">
+            <span>🏆</span>
+            <span id="best-score">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CIRCLE STATS -->
+      <div class="hub-card stats-grid">
+        <div class="circle-stat-item">
+          <div class="circle-dot blue"></div>
+          <div class="circle-stat-info">
+            <span>Regular</span>
+            <span class="stat-points">+1</span>
+          </div>
+        </div>
+        <div class="circle-stat-item">
+          <div class="circle-dot gold"></div>
+          <div class="circle-stat-info">
+            <span>Bonus</span>
+            <span class="stat-points">+5</span>
+          </div>
+        </div>
+        <div class="circle-stat-item">
+          <div class="circle-dot red"></div>
+          <div class="circle-stat-info">
+            <span>Danger</span>
+            <span class="stat-points">-1</span>
+          </div>
+        </div>
+        <div class="circle-stat-item">
+          <div class="circle-count-indicator">
+            <span id="circle-count">0</span>
+            <span>active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="hub-card actions-card">
+        <button id="quick-restart" class="ghost-btn">🔄 Restart</button>
+        <div class="lifetime-indicator">
+          <span>⏰</span>
+          <span id="lifetime-display">3.0s</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREENS (unchanged) -->
+    <div id="start-screen" class="screen">
+      <div class="screen-content glass">
+        <h1>🎯 MOVING CIRCLES</h1>
+        <div class="instruction-grid">
+          <div class="instruction-card">
+            <div class="circle-preview blue"></div>
+            <div class="instruction-detail">
+              <strong>+1</strong>
+              <small>Regular</small>
+            </div>
+          </div>
+          <div class="instruction-card">
+            <div class="circle-preview gold"></div>
+            <div class="instruction-detail">
+              <strong>+5</strong>
+              <small>Bonus</small>
+            </div>
+          </div>
+          <div class="instruction-card">
+            <div class="circle-preview red"></div>
+            <div class="instruction-detail">
+              <strong>-1</strong>
+              <small>Danger</small>
+            </div>
+          </div>
+        </div>
+        <button id="start-btn-screen" class="glow-button">▶ PLAY NOW</button>
+      </div>
     </div>
 
     <div id="game-over-screen" class="screen hidden">
-      <div class="screen-content">
-        <h2>🏁 Game Over</h2>
-        <div class="final-stats">
-          <p>Your Score: <span id="final-score">0</span></p>
-          <p>Level Reached: <span id="final-level">1</span></p>
-          <p>Max Combo: <span id="final-combo">0</span></p>
+      <div class="screen-content glass">
+        <h2>🏁 GAME OVER</h2>
+        <div class="final-score-big">
+          <span id="final-score">0</span>
+          <span>points</span>
         </div>
-        <div class="button-group">
-          <button id="restart-btn" class="game-btn">🔄 Play Again</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="start-screen" class="screen">
-      <div class="screen-content">
-        <h1>🌈 COLOR CLICK</h1>
-        <div class="instructions">
-          <div class="instruction-item">
-            <span class="color-dot" style="background: #ff4757;"></span>
-            <span>+1 point</span>
+        <div class="final-stats-row">
+          <div class="final-stat-item">
+            <span>Level</span>
+            <span id="final-level">1</span>
           </div>
-          <div class="instruction-item">
-            <span class="color-dot" style="background: #FFD700;"></span>
-            <span>+5 points & particles</span>
+          <div class="final-stat-item">
+            <span>Combo</span>
+            <span id="final-combo">0</span>
           </div>
-          <div class="instruction-item">
-            <span class="color-dot" style="background: #FF0000;"></span>
-            <span>-1 life</span>
+          <div class="final-stat-item">
+            <span>Time</span>
+            <span id="final-time">00:00</span>
           </div>
         </div>
-        <button id="start-btn" class="game-btn large">🚀 START GAME</button>
+        <button id="restart-btn" class="glow-button">🔄 PLAY AGAIN</button>
       </div>
     </div>
 
     <div id="pause-screen" class="screen hidden">
-      <div class="screen-content">
+      <div class="screen-content glass">
         <h2>⏸️ PAUSED</h2>
-        <button id="resume-btn" class="game-btn">▶️ Resume</button>
+        <button id="resume-btn" class="glow-button">▶ RESUME</button>
       </div>
     </div>
   </div>
